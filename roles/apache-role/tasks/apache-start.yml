@@ -1,10 +1,12 @@
 ---
-#- name: Install Apache
-#  yum: name=httpd state=latest
-#  become: true
-#  become_user: root
-#  become_method: sudo
-#  tags: httpd
+- name: Install Apache
+  yum: 
+    name: httpd24 
+    state: latest
+  become: true
+  become_user: root
+  become_method: sudo
+  tags: httpd
 
 - name: Assign Permissions to httpd directory
   become: true
@@ -20,9 +22,9 @@
   shell: /usr/bin/systemctl start httpd24-httpd.service
   tags: start apache
 
-#- name: Enable Apache Service
-#  become: true
-#  become_user: root
-#  become_method: sudo
-#  shell: /usr/bin/systemctl enable httpd24-httpd.service
-#  tags: enable apache
+- name: Enable Apache Service
+  become: true
+  become_user: root
+  become_method: sudo
+  shell: /usr/bin/systemctl enable httpd24-httpd.service
+  tags: enable apache

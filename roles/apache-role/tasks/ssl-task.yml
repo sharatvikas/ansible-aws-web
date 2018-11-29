@@ -1,17 +1,23 @@
 ---
-
-  - name: install apache2
-    apt: 
-      name: apache2 
-      update_cache: yes 
-      state: latest
-
+  - name: Makr Dir for Hello HTML
+    file:
+      path: /var/www/hello.com/hello_html
+      state: directory
+      mode: 0755
+      owner: apache2
+      group: apache2
+    
   - name: enabled mod_rewrite
     apache2_module: 
         name: rewrite 
         state: present
     notify:
       - restart apache2
+
+  - name: Copy Hello World HTML
+    copy:
+      file: "index.html"
+      dest: "/var/www/hello.com/hello_html/index.html"
 
   - name: apache2 listen on port {{ http_port }}
     lineinfile: 
