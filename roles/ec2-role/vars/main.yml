@@ -3,6 +3,6 @@ instance_type: t2.micro
 ami: ami-011b3ccf1bd6db744  # Ubuntu 14.04 LTS
 project_name: testing
 env: staging
-app_code_user: "ubuntu" # remote user
-hoststring: "ansible_ssh_user=ec2-user ansible_ssh_private_key_file=../Ubuntu-Ansible.pem"
+app_code_user: "ec2-user" # remote user
+hoststring: "ansible_user=ec2-user ansible_private_key_file=../Ubuntu-Ansible.pem"
 hostpath: "inventory/hosts"
