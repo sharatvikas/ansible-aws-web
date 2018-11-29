@@ -1,0 +1,19 @@
+---
+
+- name: Configure the EC2 Key
+  hosts: 127.0.0.1
+  connection: local
+  gather_facts: False
+  include: all.yml
+ 
+#- name: Create the EC2 Instance
+#  hosts: 127.0.0.1
+#  connection: local
+#  gather_facts: False
+#  include: ec2-create.yml
+
+#- name: Include IP Value to Host File
+#  hosts: 127.0.0.1
+#  connection: local
+#  gather_facts: False
+#  include: host-include.yml

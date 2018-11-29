@@ -1,0 +1,6 @@
+---
+- name: Instance Role
+  include: inst-role.yml
+
+- name: Ansible & Apache Role
+  include: ap-role.yml

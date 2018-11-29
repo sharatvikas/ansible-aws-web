@@ -1,0 +1,9 @@
+---
+
+  - hosts: webservers
+    become: yes
+    become_user: ec2-user
+    become_method: sudo
+    roles:
+      - ansible-role
+      - apache-role

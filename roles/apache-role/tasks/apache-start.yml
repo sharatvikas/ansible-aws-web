@@ -1,0 +1,28 @@
+---
+#- name: Install Apache
+#  yum: name=httpd state=latest
+#  become: true
+#  become_user: root
+#  become_method: sudo
+#  tags: httpd
+
+- name: Assign Permissions to httpd directory
+  become: true
+  become_user: root
+  become_method: sudo
+  shell: chown -R apache:apache /apps/opt/httpd; chmod -R 777 /apps/opt/httpd
+
+- name: Start Apache
+  become: true
+  become_user: root
+  become_method: sudo
+  #shell: source /apps/opt/siteminder/webagent/ca_wa_env.sh; /apps/opt/httpd/bin/apachectl -f /apps/opt/httpd/conf/httpd.conf -k start
+  shell: /usr/bin/systemctl start httpd24-httpd.service
+  tags: start apache
+
+#- name: Enable Apache Service
+#  become: true
+#  become_user: root
+#  become_method: sudo
+#  shell: /usr/bin/systemctl enable httpd24-httpd.service
+#  tags: enable apache
