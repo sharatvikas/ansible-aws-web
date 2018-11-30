@@ -1,4 +1,0 @@
-ssl_certificate: |
-  -----BEGIN CERTIFICATE-----
-  ...
-  -----END CERTIFICATE-----

@@ -1,54 +1,61 @@
 ---
   - name: Makr Dir for Hello HTML
     file:
-      path: /var/www/hello.com/hello_html
+      path: /var/www/html/hello
       state: directory
       mode: 0755
-      owner: apache2
-      group: apache2
+      owner: apache
+      group: apache
     
-  - name: enabled mod_rewrite
-    apache2_module: 
-        name: rewrite 
-        state: present
-    notify:
-      - restart apache2
+  #- name: enabled mod_rewrite
+  #  apache2_module: 
+  #      name: rewrite 
+  #      state: present
+  #  notify:
+  #    - restart httpd
 
-  - name: Copy Hello World HTML
-    copy:
-      file: "index.html"
-      dest: "/var/www/hello.com/hello_html/index.html"
-
-  - name: apache2 listen on port {{ http_port }}
-    lineinfile: 
-      dest: /etc/apache2/ports.conf
-      regexp: "^Listen " 
-      line: "Listen {{ http_port }}"
-      state: present
-    notify:
-      - restart apache2
-
-  - name: apache2 virtualhost on port {{ http_port }}
-    lineinfile:
-     dest: /etc/apache2/sites-available/000-default.conf
-     regexp: "^<VirtualHost *:"
-     line: "<VirtualHost *:{{ http_port }}>"
-    notify:
-      - restart apache2
-
-  - name: create virtual host file
+  - name: Copy Index.html
     template: 
-      src: virtualhost.conf 
-      dest: /etc/apache2/sites-available/{{ domain }}.conf
+      src: index.html 
+      dest: /var/www/html/hello/
+      owner: apache
+      group: apache
+      mode: 0755
 
-  - name: a2ensite {{ domain }}
-    command: a2ensite {{ domain }}
-    args:
-      creates: /etc/apache2/sites-enabled/{{ domain }}.conf
+  - name: Copy Conf File
+    template: 
+      src: httpd.conf
+      dest: /etc/httpd/conf/
+      owner: apache
+      group: apache
+      mode: 0755
     notify:
-      - restart apache2
+      - restart httpd
 
-    handlers:
-      - name: restart apache2
-    service: name=apache2 
-    state: restarted
+  - name: Check for 443
+    debug:
+      msg: "Check URL {{ inventory_hostname }}"
+
+  - name: Restart HTTPD
+    become: true
+    become_user: apache
+    become_method: sudo
+    shell: /usr/bin/systemctl restart httpd.service
+
+ # - name: apache2 virtualhost on port 443
+ #   copy: 
+ #    file: 000-default.conf
+ #    dest: /etc/httpd/conf.modules.d/000-default.conf
+ #   notify:
+ #     - restart apache2
+
+ # - name: create virtual host file
+ #   template: 
+ #     src: virtualhost.conf 
+ #     dest: /etc/httpd/conf.modules.d/00-default.conf
+ #     state: present
+
+  - name: restart httpd
+    service:
+      name: httpd
+      state: restarted
