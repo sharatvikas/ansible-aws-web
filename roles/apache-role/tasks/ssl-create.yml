@@ -49,3 +49,12 @@
       group: apache
       mode: 0600
     no_log: true
+
+  - name: make sure SSL pem is installed
+    copy:
+      src: apachessl.pem
+      dest: /etc/httpd/sites/ssl/
+      owner: apache
+      group: apache
+      mode: 0600
+    no_log: true
